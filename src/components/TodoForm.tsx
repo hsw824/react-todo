@@ -1,19 +1,17 @@
 import { ChangeEvent, FormEvent, useRef, useState } from "react";
+import { useTodoDispatch } from "../\bcontext/TodoContext";
 
-export default function TodoForm({
-  onAddTodo,
-}: {
-  onAddTodo: (newText: string) => void;
-}) {
+export default function TodoForm() {
   const [value, setValue] = useState("");
   const inputRef = useRef<null | HTMLInputElement>(null);
+  const dispatch = useTodoDispatch();
 
   const handleValue = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   };
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onAddTodo(value);
+    dispatch({ type: "ADD", newText: value, id: nextId++ });
     setValue("");
     inputRef.current!.focus();
   };
@@ -29,3 +27,4 @@ export default function TodoForm({
     </form>
   );
 }
+let nextId = 4;

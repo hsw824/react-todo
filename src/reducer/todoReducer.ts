@@ -1,5 +1,5 @@
 import { TodoType } from "../components/Todo";
-type Action =
+export type Action =
   | { type: "ADD"; newText: string; id: number }
   | { type: "REMOVE"; filterId: number }
   | { type: "EDIT"; editId: number; editText: string };

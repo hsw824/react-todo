@@ -1,18 +1,13 @@
 import { ChangeEvent, useState } from "react";
 import { TodoType } from "./Todo";
+import { useTodoDispatch } from "../\bcontext/TodoContext";
 
-export default function TodoItem({
-  todo,
-  onFiltered,
-  onEdited,
-}: {
-  todo: TodoType;
-  onFiltered: (filterId: number) => void;
-  onEdited: (editId: number, editText: string) => void;
-}) {
+export default function TodoItem({ todo }: { todo: TodoType }) {
   let initialValue = todo.text;
   const [value, setValue] = useState(initialValue);
   const [isEdit, setIsEdit] = useState(false);
+  const dispatch = useTodoDispatch();
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   };
@@ -21,7 +16,7 @@ export default function TodoItem({
   };
 
   const handleEdit = (todoId: number) => {
-    onEdited(todoId, value);
+    dispatch({ type: "EDIT", editId: todoId, editText: value });
     setIsEdit((prev) => !prev);
   };
 
@@ -34,7 +29,9 @@ export default function TodoItem({
   ) : (
     <li>
       {todo.text}
-      <button onClick={() => onFiltered(todo.id)}>삭제</button>
+      <button onClick={() => dispatch({ type: "REMOVE", filterId: todo.id })}>
+        삭제
+      </button>
       <button onClick={handleIsEdit}>수정</button>
     </li>
   );
