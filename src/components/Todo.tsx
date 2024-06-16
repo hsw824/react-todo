@@ -35,10 +35,29 @@ export default function Todos() {
     const filteredTodo = todos.filter((t) => t.id !== filterId);
     setTodos(filteredTodo);
   };
+
+  const handleEditTodo = (editId: number, editText: string) => {
+    const editTodo = todos.map((t) => {
+      if (t.id === editId) {
+        return {
+          ...t,
+          text: editText,
+        };
+      } else {
+        return t;
+      }
+    });
+    setTodos(editTodo);
+  };
   return (
     <div className="todo-container">
       <TodoForm onAddTodo={handleAddTodo} />
-      <TodoList todos={todos} onFiltered={handleFilterTodo} />
+      <TodoList
+        todos={todos}
+        onFiltered={handleFilterTodo}
+        onEdited={handleEditTodo}
+      />
+      총 개수:{todos.length}
     </div>
   );
 }
