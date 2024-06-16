@@ -14,6 +14,11 @@ export default function Todos() {
   ]);
 
   const handleAddTodo = (newText: string) => {
+    const duplicatedTodo = todos.find((t) => t.text === newText);
+    if (duplicatedTodo) {
+      alert("할일이 중복됐습니다.");
+      return;
+    }
     setTodos((prev) => {
       return [
         ...prev,
@@ -25,10 +30,15 @@ export default function Todos() {
       ];
     });
   };
+
+  const handleFilterTodo = (filterId: number) => {
+    const filteredTodo = todos.filter((t) => t.id !== filterId);
+    setTodos(filteredTodo);
+  };
   return (
     <div className="todo-container">
       <TodoForm onAddTodo={handleAddTodo} />
-      <TodoList todos={todos} />
+      <TodoList todos={todos} onFiltered={handleFilterTodo} />
     </div>
   );
 }
